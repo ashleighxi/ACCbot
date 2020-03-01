@@ -16,12 +16,21 @@ async def on_ready():
 @client.event
 async def on_message(message):
     if message.author !=  client.user:
-        if message.content.startswith('$hello'):
-            print('they said hello')
-            await message.channel.send('Hello!')
+        if message.content.startswith('!sr'):
+        await message.channel.send(message.content)
+        parseReport(message)
+        await message.channel.send('Thank you for reporting the score!')
     else:
         return
 
+
+def parseReport(message):
+    splitText = message.content.split()
+    teamOne = splitText[1]#[1:]
+    teamTwo = splitText[3]#[1:]
+    score = splitText[2]
+    print("parsing message: ", teamOne, score, teamTwo)
+    return
 
 
 client.run('')
