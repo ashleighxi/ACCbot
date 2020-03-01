@@ -26,9 +26,9 @@ TABLES['matches'] = (
     "  `winner_id` varchar(20) NOT NULL,"
     "  PRIMARY KEY (`match_id`),"
     "  CONSTRAINT `matches_tmfk_1` FOREIGN KEY (`blue_team_id`) "
-    "     REFERENCES `teams` (`team_id`)"
+    "     REFERENCES `teams` (`team_id`),"
     "  CONSTRAINT `matches_tmfk_2` FOREIGN KEY (`orange_team_id`) "
-    "     REFERENCES `teams` (`team_id`)"
+    "     REFERENCES `teams` (`team_id`),"
     "  CONSTRAINT `matches_tmfk_3` FOREIGN KEY (`winner_id`) "
     "     REFERENCES `teams` (`team_id`)"
     ") ENGINE=InnoDB")
