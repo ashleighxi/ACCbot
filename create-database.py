@@ -10,8 +10,8 @@ TABLES['teams'] = (
     "CREATE TABLE `teams` ("
     "  `team_id` varchar(20) NOT NULL,"
     "  `team_name` varchar(16) NOT NULL,"
-    "  `matches_won` int(4) NOT NULL,"
-    "  `matches_lost` int(4) NOT NULL,"
+    "  `matches_won` smallint(4) NOT NULL,"
+    "  `matches_lost` smallint(4) NOT NULL,"
     "  PRIMARY KEY (`team_id`), UNIQUE KEY `team_name` (`team_name`)"
     ") ENGINE=InnoDB")
 
@@ -21,8 +21,8 @@ TABLES['matches'] = (
     "  `match_date` date NOT NULL,"
     "  `blue_team_id` varchar(20) NOT NULL,"
     "  `orange_team_id` varchar(20) NOT NULL,"
-    "  `blue_team_score` int(2) NOT NULL,"
-    "  `orange_team_score` int(2) NOT NULL,"
+    "  `blue_team_score` tinyint(2) NOT NULL,"
+    "  `orange_team_score` tinyint(2) NOT NULL,"
     "  `winner_id` varchar(20) NOT NULL,"
     "  PRIMARY KEY (`match_id`),"
     "  CONSTRAINT `matches_tmfk_1` FOREIGN KEY (`blue_team_id`) "
