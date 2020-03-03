@@ -1,4 +1,6 @@
 import discord
+import datetime
+import mysql.connector
 import logging
 
 logger = logging.getLogger('discord')
@@ -21,9 +23,22 @@ async def on_message(message):
             #await message.channel.send('Thank you for reporting the score!')
         elif message.content.startswith('!tid'):
             getTeamID(message)
+        elif message.content.startswith('!teams'):
+            queryTeamList()
 
     else:
         return
+
+def queryTeamList():
+    cnx = mysql.connector.connect(user='', password='', database='acc_league')
+    cursor = cnx.cursor()
+    query = ("SELECT team_id, team_name, matches_won, matches_lost FROM teams")
+    cursor.execute(query)
+    for (team_id, team_name, matches_won, matches_lost) in cursor:
+        print("{}({}): {}-{}".format(team_name, team_id, matches_won, matches_lost))
+    cursor.close()
+    cnx.close()
+    return
 
 def getTeamID(message):
     splitText = message.content.split()
