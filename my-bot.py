@@ -1,6 +1,7 @@
 from __future__ import print_function
 import discord
 from datetime import date, datetime, timedelta
+from operator import itemgetter
 import mysql.connector
 import logging
 
@@ -122,7 +123,7 @@ def storeScoreReport(data):
 def getStandings():
     cnx = mysql.connector.connect(user='', password='', database='acc_league')
     cursor = cnx.cursor()
-    league_query = ("SELECT team_name, matches_won, matches_lost, division, games_won, games_lost FROM teams ORDER BY matches_won DESC, game_lost ASC")
+    league_query = ("SELECT team_name, matches_won, matches_lost, division, games_won, games_lost FROM teams ORDER BY matches_won DESC")
     cursor.execute(league_query)
     standings_list = []
     a_standings = []
@@ -131,11 +132,16 @@ def getStandings():
     atlantic = ''
     coastal = ''
     for (team_name, matches_won, matches_lost, division, games_won, games_lost) in cursor:
-        standings_list.append((team_name, matches_won, matches_lost, games_won, games_lost))
-        if division = 'Atlantic':
-            a_standings.append((team_name, matches_won, matches_lost, games_won, games_lost))
+        win_perc = Float((games_won + game_lost)) / Float(games_won)
+        print(win_perc)
+        standings_list.append((team_name, matches_won, matches_lost, games_won, games_lost, win_perc))
+        if division == 'Atlantic':
+            a_standings.append((team_name, matches_won, matches_lost, games_won, games_lost, win_perc))
         else:
-            c_standings.append((team_name, matches_won, matches_lost, games_won, games_lost))
+            c_standings.append((team_name, matches_won, matches_lost, games_won, games_lost, win_perc))
+    standings_list.sort(key = itemgetter(5))
+    a_standings.sort(key = itemgetter(5))
+    c_standings.sort(key = itemgetter(5))
     for team in standings_list:
         s = "{}. {} ({}-{})\n".format(standings_list.index(team) + 1, team[0], team[1], team[2])
         overall += s
