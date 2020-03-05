@@ -91,14 +91,16 @@ def storeScoreReport(data):
     losses = 0
     winner_query = ("SELECT matches_won FROM teams WHERE team_id = %s")
     loser_query = ("SELECT matches_lost FROM teams WHERE team_id = %s")
-    cursor.execute(winner_query, winner)
-    winner_result = cursor.fetchall()
-    for x in winner_result:
-        wins = x + 1
-    cursor.execute(loser_query, loser)
-    loser_result = cursor.fetchall()
-    for x in loser_result:
-        losses = x + 1
+    cursor.execute(winner_query, (winner,))
+    winner_result = cursor.fetchone()
+    while winner_result is not None:
+        wins = winner_result[0] + 1
+        winner_result = cursor.fetchone()
+    cursor.execute(loser_query, (loser,))
+    loser_result = cursor.fetchone()
+    while loser_result is not None:
+        losses = loser_result[0] + 1
+        loser_result = cursor.fetchone()
     winner_update = ("UPDATE teams SET matches_won = %s WHERE team_id = %s")
     loser_update = ("UPDATE teams SET matches_lost = %s WHERE team_id = %s")
     updates = [
