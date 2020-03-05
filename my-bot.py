@@ -30,6 +30,10 @@ async def on_message(message):
         elif message.content.startswith('!teams'):
             queryTeamList()
             return
+        elif message.content.startswith('!standings'):
+            standings_string = getStandings()
+            await message.channel.send(standings_string)
+            return
 
     else:
         return
@@ -114,6 +118,45 @@ def storeScoreReport(data):
     cnx.close()
 
     return
+
+def getStandings():
+    cnx = mysql.connector.connect(user='', password='', database='acc_league')
+    cursor = cnx.cursor()
+    league_query = ("SELECT team_name, matches_won, matches_lost, division, games_won, games_lost FROM teams ORDER BY matches_won DESC, game_lost ASC")
+    cursor.execute(league_query)
+    standings_list = []
+    a_standings = []
+    c_standings = []
+    overall = ''
+    atlantic = ''
+    coastal = ''
+    for (team_name, matches_won, matches_lost, division, games_won, games_lost) in cursor:
+        standings_list.append((team_name, matches_won, matches_lost, games_won, games_lost))
+        if division = 'Atlantic':
+            a_standings.append((team_name, matches_won, matches_lost, games_won, games_lost))
+        else:
+            c_standings.append((team_name, matches_won, matches_lost, games_won, games_lost))
+    for team in standings_list:
+        s = "{}. {} ({}-{})\n".format(standings_list.index(team) + 1, team[0], team[1], team[2])
+        overall += s
+    for team in a_standings:
+        s = "{}. {} ({}-{})\n".format(a_standings.index(team) + 1, team[0], team[1], team[2])
+        atlantic += s
+    for team in c_standings:
+        s = "{}. {} ({}-{})\n".format(c_standings.index(team) + 1, team[0], team[1], team[2])
+        coastal += s
+
+    overall_header = '__**Overall**__\n'
+    a_header = '__**Atlantic**__\n'
+    c_header = '__**Coastal**__\n'
+    sep = '\n\n'
+    final_string = overall_header + overall + sep + a_header + atlantic + sep + c_header + coastal
+    return final_string
+
+
+
+
+
 
 
 client.run('')
