@@ -151,6 +151,8 @@ def getStandings():
     c_header = '__**Coastal**__\n'
     sep = '\n\n'
     final_string = overall_header + overall + sep + a_header + atlantic + sep + c_header + coastal
+    cursor.close()
+    cnx.close()
     return final_string
 
 
